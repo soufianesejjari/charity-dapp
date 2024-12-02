@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Charity DApp</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+</head>
+<style>
+    .loading {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(255, 255, 255, 0.8);
+        z-index: 9999;
+    }
+    .loading-content {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+</style>
+<body>
+    <div class="container">
+        <h1 class="mt-5">Charity DApp</h1>
+        <div id="account" class="alert alert-info"></div>
+
+        <h2>Create Charity</h2>
+        <form id="createCharityForm">
+            <div class="form-group">
+                <input type="text" id="charity_name" class="form-control" placeholder="Charity Name" required>
+            </div>
+            <div class="form-group">
+                <input type="text" id="charity_description" class="form-control" placeholder="Charity Description" required>
+            </div>
+            <div class="form-group">
+                <input type="text" id="charity_bankAccount" class="form-control" placeholder="Bank Account" required>
+            </div>
+            <div class="form-group">
+                <input type="text" id="charity_bankName" class="form-control" placeholder="Bank Name" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Create Charity</button>
+        </form>
+
+        <h2>Create Organisation</h2>
+        <form id="createOrganisationForm">
+            <div class="form-group">
+                <input type="text" id="organisation_name" class="form-control" placeholder="Organisation Name" required>
+            </div>
+            <div class="form-group">
+                <input type="text" id="organisation_bankAccount" class="form-control" placeholder="Bank Account" required>
+            </div>
+            <div class="form-group">
+                <input type="text" id="organisation_bankName" class="form-control" placeholder="Bank Name" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Create Organisation</button>
+        </form>
+
+        <h2>Donate to Charity</h2>
+        <form id="donateToCharityForm">
+            <div class="form-group">
+                <input type="number" id="charity_id" class="form-control" placeholder="Charity ID" required>
+            </div>
+            <div class="form-group">
+                <input type="number" id="donation_amount" class="form-control" placeholder="Amount in ETH" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Donate</button>
+        </form>
+
+        <h2>Charities</h2>
+        <div id="charities"></div>
+
+        <h2>Organisations</h2>
+        <div id="organisations"></div>
+
+        <h2>Transactions</h2>
+        <div id="transactions"></div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/web3@1.5.2/dist/web3.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@truffle/contract@4.5.7/dist/truffle-contract.min.js"></script>
+    <script src="app.js"></script>
+    <div class="loading">
+        <div class="loading-content">
+            <div class="spinner-border text-primary" role="status">
+                <span class="sr-only">Loading...</span>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
