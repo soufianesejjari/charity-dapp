@@ -76,6 +76,7 @@ App = {
             await App.renderOrganisations();
             // Render transactions
             await App.renderTransactions();
+            await App.renderLatestCharities();
         } catch (error) {
             console.error('Error rendering:', error);
         }
@@ -157,6 +158,35 @@ App = {
             }
         } catch (error) {
             console.error('Error rendering transactions:', error);
+        }
+    },
+
+    renderLatestCharities: async () => {
+        try {
+            const charityCount = await App.charity.charityCount();
+            const $latestCharities = $('#latest-charities');
+            $latestCharities.empty();
+    
+            for (let i = Math.max(1, charityCount - 2); i <= charityCount; i++) {
+                const charity = await App.charity.charities(i);
+                const $charityTemplate = $(`
+                    <div class="col-md-4">
+                        <div class="card mb-3">
+                            <div class="card-body">
+                                <h5 class="card-title">${charity.name}</h5>
+                                <p class="card-text">${charity.description}</p>
+                                <p class="card-text">Bank Account: ${charity.bankAccount}</p>
+                                <p class="card-text">Bank Name: ${charity.bankName}</p>
+                                <p class="card-text">Balance: ${web3.utils.fromWei(charity.balance.toString(), 'ether')} ETH</p>
+                                <p class="card-text">ID: ${charity.id}</p>
+                            </div>
+                        </div>
+                    </div>
+                `);
+                $latestCharities.append($charityTemplate);
+            }
+        } catch (error) {
+            console.error('Error rendering latest charities:', error);
         }
     },
 
@@ -289,10 +319,34 @@ App = {
             $('#donateToOrganisationForm button').prop('disabled', false);
         }
     },
+
+    includeHTML: () => {
+        let z, i, elmnt, file, xhttp;
+        z = document.getElementsByTagName("*");
+        for (i = 0; i < z.length; i++) {
+            elmnt = z[i];
+            file = elmnt.getAttribute("w3-include-html");
+            if (file) {
+                xhttp = new XMLHttpRequest();
+                xhttp.onreadystatechange = function() {
+                    if (this.readyState == 4) {
+                        if (this.status == 200) {elmnt.innerHTML = this.responseText;}
+                        if (this.status == 404) {elmnt.innerHTML = "Page not found.";}
+                        elmnt.removeAttribute("w3-include-html");
+                        App.includeHTML();
+                    }
+                }
+                xhttp.open("GET", file, true);
+                xhttp.send();
+                return;
+            }
+        }
+    },
 };
 
 // Initialize app when document is ready
 $(document).ready(function() {
+    App.includeHTML();
     App.init();
 
     $('#createCharityForm').on('submit', async function(e) {

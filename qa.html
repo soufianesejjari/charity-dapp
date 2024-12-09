@@ -1,0 +1,52 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Q&A</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Include the navbar -->
+    <div w3-include-html="navbar.html"></div>
+    <div class="container mt-5">
+        <h1>Q&A</h1>
+        <div class="accordion" id="qaAccordion">
+            <div class="card">
+                <div class="card-header" id="headingOne">
+                    <h2 class="mb-0">
+                        <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                            What is Charity DApp?
+                        </button>
+                    </h2>
+                </div>
+                <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#qaAccordion">
+                    <div class="card-body">
+                        Charity DApp is a decentralized application designed to bring transparency and efficiency to the process of donating and managing charitable funds using blockchain technology.
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header" id="headingTwo">
+                    <h2 class="mb-0">
+                        <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                            How does it ensure transparency?
+                        </button>
+                    </h2>
+                </div>
+                <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#qaAccordion">
+                    <div class="card-body">
+                        By leveraging blockchain technology, all transactions are secure, transparent, and immutable, ensuring that all donations are tracked and accounted for.
+                    </div>
+                </div>
+            </div>
+            <!-- Add more Q&A items as needed -->
+        </div>
+    </div>
+    <script>
+        w3.includeHTML();
+    </script>
+</body>
+</html>
