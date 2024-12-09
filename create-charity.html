@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Charity</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Include the navbar -->
+    <div w3-include-html="navbar.html"></div>
+    <div class="container mt-5">
+        <h1>Create Charity</h1>
+        <form id="createCharityForm">
+            <div class="form-group">
+                <input type="text" id="charity_name" class="form-control" placeholder="Charity Name" required>
+            </div>
+            <div class="form-group">
+                <textarea id="charity_description" class="form-control" placeholder="Description" required></textarea>
+            </div>
+            <div class="form-group">
+                <input type="text" id="charity_bankAccount" class="form-control" placeholder="Bank Account" required>
+            </div>
+            <div class="form-group">
+                <input type="text" id="charity_bankName" class="form-control" placeholder="Bank Name" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Create</button>
+        </form>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/web3@1.5.2/dist/web3.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@truffle/contract@4.5.7/dist/truffle-contract.min.js"></script>
+    <script src="app.js"></script>
+    <script>
+        w3.includeHTML();
+    </script>
+</body>
+</html>
