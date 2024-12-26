@@ -9,6 +9,8 @@ App = {
             await App.initWeb3();
             await App.loadContract();
             await App.render();
+            await App.initMongoDB();
+            await App.initFraudDetectionModel();
             console.log('App initialized successfully');
         } catch (error) {
             console.error('Failed to initialize app:', error);
@@ -44,6 +46,32 @@ App = {
             console.error('No ethereum browser detected');
             $('#account').html('Please install MetaMask to use this DApp');
             throw new Error('No ethereum browser detected');
+        }
+    },
+
+    initMongoDB: async () => {
+        try {
+            const response = await fetch('http://localhost:3000/mongodb/init');
+            if (!response.ok) {
+                throw new Error('Failed to initialize MongoDB');
+            }
+            console.log('MongoDB initialized successfully');
+        } catch (error) {
+            console.error('Error initializing MongoDB:', error);
+            $('#account').html('Error initializing MongoDB. Please try again later.');
+        }
+    },
+
+    initFraudDetectionModel: async () => {
+        try {
+            const response = await fetch('http://localhost:3001/fraud-detection/init');
+            if (!response.ok) {
+                throw new Error('Failed to initialize fraud detection model');
+            }
+            console.log('Fraud detection model initialized successfully');
+        } catch (error) {
+            console.error('Error initializing fraud detection model:', error);
+            $('#account').html('Error initializing fraud detection model. Please try again later.');
         }
     },
 
@@ -214,6 +242,21 @@ App = {
                     gas: 3000000
                 }
             );
+
+            // Save to MongoDB
+            await fetch('http://localhost:3000/mongodb/saveCharity', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    name,
+                    description,
+                    bankAccount,
+                    bankName,
+                    charityAddress: App.account
+                })
+            });
     
             console.log('Charity created:', result);
             $('#createCharityForm')[0].reset();
@@ -276,6 +319,38 @@ App = {
                     gas: 3000000
                 }
             );
+
+            // Save to MongoDB
+            await fetch('http://localhost:3000/mongodb/saveTransaction', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    from: App.account,
+                    to: charityId,
+                    amount,
+                    timestamp: Date.now()
+                })
+            });
+
+            // Check for fraud
+  /*           const fraudCheck = await fetch('http://localhost:3001/fraud-detection/check', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    from: App.account,
+                    to: charityId,
+                    amount
+                })
+            });
+            const  */
+/*             fraudResult = await fraudCheck.json();
+            if (fraudResult.isFraud) {
+                window.alert('Fraud detected in this transaction!');
+            } */
     
             console.log('Donation successful:', result);
             $('#donateToCharityForm')[0].reset();

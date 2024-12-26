@@ -9,7 +9,7 @@
 </head>
 <body>
     <!-- Include the navbar -->
-    <div w3-include-html="navbar.html"></div>
+    <div id="navbar"></div>
     <div class="container mt-5">
         <h1>Transactions</h1>
         <div id="transactions"></div>
@@ -20,7 +20,10 @@
     <script src="https://cdn.jsdelivr.net/npm/@truffle/contract@4.5.7/dist/truffle-contract.min.js"></script>
     <script src="app.js"></script>
     <script>
-        w3.includeHTML();
+        $(function(){
+            $("#navbar").load("navbar.html");
+        });
     </script>
+    <script src="mongodb.js"></script>
 </body>
 </html>
