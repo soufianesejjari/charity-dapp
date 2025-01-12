@@ -1,3 +1,4 @@
+const logger = require('./logger');
 App = {
     loading: false,
     web3Provider: null,
@@ -28,10 +29,12 @@ App = {
                 
                 window.ethereum.on('accountsChanged', function (accounts) {
                     App.account = accounts[0];
+                    console.log('Account changed:', App.account);
                     App.render();
                 });
                 
                 window.ethereum.on('chainChanged', function () {
+                    console.log('Chain changed, reloading page...');
                     window.location.reload();
                 });
                 
@@ -50,6 +53,7 @@ App = {
     },
 
     initMongoDB: async () => {
+        console.log('Initializing MongoDB...');
         try {
             const response = await fetch('http://localhost:3000/mongodb/init');
             if (!response.ok) {
@@ -63,6 +67,7 @@ App = {
     },
 
     initFraudDetectionModel: async () => {
+        console.log('Initializing Fraud Detection Model...');
         try {
             const response = await fetch('http://localhost:3001/fraud-detection/init');
             if (!response.ok) {
@@ -76,6 +81,7 @@ App = {
     },
 
     loadContract: async () => {
+        console.log('Loading contract...');
         try {
             const response = await fetch('Charity.json');
             if (!response.ok) {
@@ -94,6 +100,7 @@ App = {
     },
 
     render: async () => {
+        console.log('Rendering app...');
         try {
             // Update account info
             $('#account').html('Your Account: ' + App.account);
@@ -111,6 +118,7 @@ App = {
     },
 
     renderCharities: async () => {
+        console.log('Rendering charities...');
         try {
             const charityCount = await App.charity.charityCount();
             const $charities = $('#charities');
@@ -138,6 +146,7 @@ App = {
     },
 
     renderOrganisations: async () => {
+        console.log('Rendering organisations...');
         try {
             const orgCount = await App.charity.orgCount();
             const $organisations = $('#organisations');
@@ -164,6 +173,7 @@ App = {
     },
 
     renderTransactions: async () => {
+        console.log('Rendering transactions...');
         try {
             const transactionCount = await App.charity.transactionCount();
             const $transactions = $('#transactions');
@@ -190,6 +200,7 @@ App = {
     },
 
     renderLatestCharities: async () => {
+        console.log('Rendering latest charities...');
         try {
             const charityCount = await App.charity.charityCount();
             const $latestCharities = $('#latest-charities');
@@ -219,6 +230,7 @@ App = {
     },
 
     createCharity: async () => {
+        console.log('Creating charity...');
         $('.loading').show();
         $('#createCharityForm button').prop('disabled', true);
     
@@ -243,6 +255,7 @@ App = {
                 }
             );
 
+            console.log('Saving charity to MongoDB...');
             // Save to MongoDB
             await fetch('http://localhost:3000/mongodb/saveCharity', {
                 method: 'POST',
@@ -272,6 +285,7 @@ App = {
     },
 
     createOrganisation: async () => {
+        console.log('Creating organisation...');
         $('.loading').show();
         $('#createOrganisationForm button').prop('disabled', true);
         
@@ -304,6 +318,7 @@ App = {
     },
 
     donateToCharity: async () => {
+        console.log('Donating to charity...');
         $('.loading').show();
         $('#donateToCharityForm button').prop('disabled', true);
         
@@ -320,6 +335,7 @@ App = {
                 }
             );
 
+            console.log('Saving transaction to MongoDB...');
             // Save to MongoDB
             await fetch('http://localhost:3000/mongodb/saveTransaction', {
                 method: 'POST',
@@ -333,25 +349,6 @@ App = {
                     timestamp: Date.now()
                 })
             });
-
-            // Check for fraud
-  /*           const fraudCheck = await fetch('http://localhost:3001/fraud-detection/check', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    from: App.account,
-                    to: charityId,
-                    amount
-                })
-            });
-            const  */
-/*             fraudResult = await fraudCheck.json();
-            if (fraudResult.isFraud) {
-                window.alert('Fraud detected in this transaction!');
-            } */
-    
             console.log('Donation successful:', result);
             $('#donateToCharityForm')[0].reset();
             await App.render();
@@ -366,6 +363,7 @@ App = {
     },
 
     donateToOrganisation: async () => {
+        console.log('Donating to organisation...');
         $('.loading').show();
         $('#donateToOrganisationForm button').prop('disabled', true);
         
@@ -396,6 +394,7 @@ App = {
     },
 
     includeHTML: () => {
+        console.log('Including HTML...');
         let z, i, elmnt, file, xhttp;
         z = document.getElementsByTagName("*");
         for (i = 0; i < z.length; i++) {
@@ -421,26 +420,31 @@ App = {
 
 // Initialize app when document is ready
 $(document).ready(function() {
+    console.log('Document ready, initializing app...');
     App.includeHTML();
     App.init();
 
     $('#createCharityForm').on('submit', async function(e) {
         e.preventDefault();
+        console.log('Create charity form submitted');
         await App.createCharity();
     });
 
     $('#createOrganisationForm').on('submit', async function(e) {
         e.preventDefault();
+        console.log('Create organisation form submitted');
         await App.createOrganisation();
     });
 
     $('#donateToCharityForm').on('submit', async function(e) {
         e.preventDefault();
+        console.log('Donate to charity form submitted');
         await App.donateToCharity();
     });
 
     $('#donateToOrganisationForm').on('submit', async function(e) {
         e.preventDefault();
+        console.log('Donate to organisation form submitted');
         await App.donateToOrganisation();
     });
 });
